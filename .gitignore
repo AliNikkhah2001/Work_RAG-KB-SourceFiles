@@ -1,0 +1,4 @@
+﻿# SourceFiles - keep everything except temp
+*.tmp
+*.log
+__pycache__/
