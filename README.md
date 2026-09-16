@@ -2,13 +2,22 @@
 
 Private archive of ICS Credit Scoring KB source documents.
 
-## Contents
+## Dataset folders (one snapshot per date — ingest exactly one)
 
-| Path | Description | Size |
-|------|-------------|------|
-| archives/KB_31Tir1405_clean.zip | Primary KB archive -- 78 XLSX (clean_files) | ~1.8 MB |
-| KB-Source.zip | Same archive at repo root (convenience) | ~1.8 MB |
-| clean_files/ | Extracted XLSX files (78 files, UTF-8 names) | -- |
+| Path | Description |
+|------|-------------|
+| `1405-06-23/` | **CURRENT** — 41 files (`حقوقی/`, `حقیقی/`, `سایر/`, `ضمیمه پایگاه دانش چت بات/`) → 67 docs / 3,330 chunks in PG |
+| `1405-05-31/` | Previous snapshot (34 docs / 2,074 chunks) — kept for history |
+| `KB_9.7.2026/` | Older snapshot (22 files) — kept for history |
+| `archives/` | Original zips (`KB_31Tir1405_clean.zip`, legacy 78-XLSX set) |
+| `*.zip` | Root-level convenience copies of the snapshots |
+
+Legacy flat `clean_files/*.xlsx` were removed (identical content lives in
+`archives/`); ingest reads a version folder, e.g.:
+
+```bash
+python -m kb_manager.cli ingest --source-dir ../kb-source/1405-06-23 --full
+```
 
 ## Usage in main repo (Work_RAG-KB)
 
