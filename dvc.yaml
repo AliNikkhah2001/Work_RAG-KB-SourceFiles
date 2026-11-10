@@ -1,0 +1,3 @@
+# Placeholder for future ingest pipeline stages.
+# Corpus folders/archives are tracked via `dvc add` (see *.dvc files).
+stages: {}

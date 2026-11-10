@@ -1,0 +1,5 @@
+# Keep DVC focused on corpus snapshots; ignore tooling noise.
+.git
+.DS_Store
+**/__pycache__/
+*.pyc

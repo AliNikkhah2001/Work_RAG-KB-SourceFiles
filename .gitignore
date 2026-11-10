@@ -5,3 +5,9 @@ __pycache__/
 *-2026*.zip
 *-001.zip
 
+/1405-06-23
+/1405-05-31
+/1405-07-06
+/archives
+.dvc/config.local
+dvc-storage/
