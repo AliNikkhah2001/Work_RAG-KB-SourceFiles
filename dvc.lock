@@ -1,0 +1,24 @@
+schema: '2.0'
+stages:
+  snapshot-processed:
+    cmd: PYTHONPATH=../kb-manager python3 -m kb_manager.dvc_snapshot export --kb-source
+      .
+    deps:
+    - path: ../kb-manager/kb_manager/dvc_snapshot.py
+      hash: md5
+      md5: 15da48d72dbb524a0b1e05d7659b2f59
+      size: 18494
+    - path: ../kb-manager/kb_manager/registry/manifest.py
+      hash: md5
+      md5: d8112bc19f3675b9a3ef96ea3a3204c2
+      size: 7015
+    - path: .dvc_pins/current.txt
+      hash: md5
+      md5: 2c9881db029292278b60be49e6659724
+      size: 11
+    outs:
+    - path: processed/1405-06-23
+      hash: md5
+      md5: 34b978f20f40d78c0526b8518b9d670d.dir
+      size: 255118211
+      nfiles: 12
