@@ -34,6 +34,16 @@ python -m kb_manager.cli ingest --source-dir ../kb-source/1405-06-23 --full
 # curl -X POST http://127.0.0.1:8000/registry/api/manifests/build?activate=true
 ```
 
+## Processed snapshots (DVC)
+
+Chunks (no vectors), embedding vectors, entity lists, and the pinned prompt/taxonomy packs are exported from the live KB database and tracked by the `snapshot-processed` stage. Git stores `dvc.lock`; the bytes live in the DVC remote. The active corpus date is `.dvc_pins/processed.txt`.
+
+```bash
+dvc repro snapshot-processed   # needs KB Postgres on 127.0.0.1:15432
+dvc push -r localremote
+# KB manager reads packs/dvc_snapshot.json and serves GET /registry/api/dvc
+```
+
 ## Submodule usage
 
 Included from Work_RAG-KB at `kb-source/`.
