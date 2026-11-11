@@ -6,10 +6,11 @@ Private archive of ICS Credit Scoring KB source documents, versioned with **DVC*
 
 | Path | Description |
 |------|-------------|
-| `1405-06-23/` | **CURRENT** (see `.dvc_pins/current.txt`) |
-| `1405-05-31/` | Previous snapshot — history |
-| `1405-07-06/` | Alternate snapshot — history |
-| `archives/` | Original zips |
+| `1405-08-20/` | **CURRENT** (see `.dvc_pins/current.txt`). Copied from the 1405-08-03 drop. |
+| `1405-07-06/` | Previous tree — history |
+| `1405-06-23/` | Previous snapshot — history |
+| `1405-05-31/` | Older snapshot — history |
+| `archives/` | Original zips, including `1405-08-20.zip` |
 
 ## DVC
 
