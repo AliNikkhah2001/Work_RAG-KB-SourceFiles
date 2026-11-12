@@ -14,11 +14,11 @@ stages:
       size: 7015
     - path: .dvc_pins/current.txt
       hash: md5
-      md5: 2c9881db029292278b60be49e6659724
+      md5: 0413d7492114509600f3a93571f18b54
       size: 11
     outs:
-    - path: processed/1405-06-23
+    - path: processed/1405-08-20
       hash: md5
-      md5: 34b978f20f40d78c0526b8518b9d670d.dir
-      size: 255118211
+      md5: c969474905c1ad5939fefb69a63b0489.dir
+      size: 13400050
       nfiles: 12
