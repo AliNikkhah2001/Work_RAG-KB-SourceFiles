@@ -1,3 +1,16 @@
-# Placeholder for future ingest pipeline stages.
-# Corpus folders/archives are tracked via `dvc add` (see *.dvc files).
-stages: {}
+# Processed KB artifacts. Raw corpus stays on the dated *.dvc files.
+# Run from this directory when Postgres is reachable on 127.0.0.1:15432:
+#   dvc repro snapshot-processed
+stages:
+  snapshot-processed:
+    cmd: >-
+      PYTHONPATH=../kb-manager python3 -m kb_manager.dvc_snapshot export
+      --kb-source .
+    deps:
+      - ../kb-manager/kb_manager/dvc_snapshot.py
+      - ../kb-manager/kb_manager/registry/manifest.py
+      - .dvc_pins/current.txt
+    outs:
+      - processed/1405-08-20:
+          persist: true
+          cache: true
