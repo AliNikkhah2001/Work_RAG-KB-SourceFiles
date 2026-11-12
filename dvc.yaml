@@ -11,6 +11,6 @@ stages:
       - ../kb-manager/kb_manager/registry/manifest.py
       - .dvc_pins/current.txt
     outs:
-      - processed/1405-06-23:
+      - processed/1405-08-20:
           persist: true
           cache: true
