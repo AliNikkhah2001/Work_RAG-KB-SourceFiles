@@ -5,12 +5,13 @@ stages:
   snapshot-processed:
     cmd: >-
       PYTHONPATH=../kb-manager python3 -m kb_manager.dvc_snapshot export
-      --kb-source .
+      --kb-source . --corpus 1405-08-20
     deps:
       - ../kb-manager/kb_manager/dvc_snapshot.py
       - ../kb-manager/kb_manager/registry/manifest.py
+      - ../kb-manager/kb_manager/entity_lists.py
       - .dvc_pins/current.txt
     outs:
-      - processed/1405-06-23:
+      - processed/1405-08-20:
           persist: true
           cache: true
