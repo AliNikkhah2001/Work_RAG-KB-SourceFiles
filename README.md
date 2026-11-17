@@ -6,43 +6,60 @@ Private archive of ICS Credit Scoring KB source documents, versioned with **DVC*
 
 | Path | Description |
 |------|-------------|
-| `1405-08-20/` | **CURRENT** (see `.dvc_pins/current.txt`). Copied from the 1405-08-03 drop. |
+| `1405-08-20/` | **CURRENT** raw corpus (see `.dvc_pins/current.txt`) |
 | `1405-07-06/` | Previous tree — history |
 | `1405-06-23/` | Previous snapshot — history |
 | `1405-05-31/` | Older snapshot — history |
 | `archives/` | Original zips, including `1405-08-20.zip` |
+| `processed/1405-08-20/` | **CURRENT** embedded snapshot (chunks + vectors + entity lists) |
 
 ## DVC
 
-Corpus folders are tracked by DVC (not Git blobs). Pointers: `*.dvc`.
+Corpus folders and processed snapshots are tracked by DVC (not Git blobs). Git stores `*.dvc` / `dvc.lock` pointers.
 
 ```bash
-# Pull data after clone
-dvc pull -r localremote   # laptop default: ./dvc-storage
-# Optional MinIO (compose profile):
-#   COMPOSE_PROFILES=minio docker compose ... up -d minio minio-init
-#   dvc push -r minio / dvc pull -r minio
+# Pull raw + processed after clone (needs a populated DVC remote)
+dvc pull -r localremote
 ```
 
-Default remote: `localremote` → `./dvc-storage`  
-Optional remote: `minio` → `s3://kb-corpus/raw` at `http://127.0.0.1:9000` (credentials in `.dvc/config.local`, never commit).
+Default remote: `localremote` → `./dvc-storage` (laptop). Optional MinIO: `dvc pull -r minio`.
 
-## Ingest into kb-manager
+## Processed snapshot (embedded KB) — GitHub Release
 
-```bash
-python -m kb_manager.cli ingest --source-dir ../kb-source/1405-06-23 --full
-# then build+activate IndexManifest via UI /registry or:
-# curl -X POST http://127.0.0.1:8000/registry/api/manifests/build?activate=true
-```
+Live Postgres is **not** in Git. After ingest we export JSONL + embeddings and publish a Release asset so another machine can restore without re-embedding.
 
-## Processed snapshots (DVC)
+**Current pin:** `.dvc_pins/processed.txt` → `1405-08-20` (21 docs / 1319 chunks / 8 entity lists).
 
-Chunks (no vectors), embedding vectors, entity lists, and the pinned prompt/taxonomy packs are exported from the live KB database and tracked by the `snapshot-processed` stage. Git stores `dvc.lock`; the bytes live in the DVC remote. The active corpus date is `.dvc_pins/processed.txt`.
+### On the laptop (after ingest)
 
 ```bash
-dvc repro snapshot-processed   # needs KB Postgres on 127.0.0.1:15432
+cd components/knowledgebase/kb-source
+dvc repro snapshot-processed          # or: PYTHONPATH=../kb-manager python3 -m kb_manager.dvc_snapshot export --kb-source .
 dvc push -r localremote
-# KB manager reads packs/dvc_snapshot.json and serves GET /registry/api/dvc
+# then publish Release (CI/agent): processed-1405-08-20.tar.gz
+```
+
+### On the server (restore DB from GitHub)
+
+```bash
+cd components/knowledgebase/kb-source
+git pull
+gh release download processed-1405-08-20 \
+  -R AliNikkhah2001/Work_RAG-KB-SourceFiles \
+  -p 'processed-1405-08-20.tar.gz' -D /tmp
+mkdir -p processed
+tar -C processed -xzf /tmp/processed-1405-08-20.tar.gz
+# Postgres must be empty or you accept upserts:
+PYTHONPATH=../kb-manager python3 -m kb_manager.dvc_snapshot restore \
+  --kb-source . --corpus 1405-08-20 --apply \
+  --db-url 'postgresql://postgres:postgres@127.0.0.1:5432/kb_manager'
+# restart KB so BM25/dense reload
+```
+
+## Ingest from raw (alternative to restore)
+
+```bash
+python -m kb_manager.cli ingest --source-dir ../kb-source/1405-08-20 --full
 ```
 
 ## Submodule usage

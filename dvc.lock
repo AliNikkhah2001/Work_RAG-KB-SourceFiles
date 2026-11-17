@@ -23,6 +23,6 @@ stages:
     outs:
     - path: processed/1405-08-20
       hash: md5
-      md5: e8d54229fdce24918a24c17e96f822bd.dir
+      md5: e0d1c6dba86334c14e3de6365f0f1fcc.dir
       size: 12462861
       nfiles: 12
